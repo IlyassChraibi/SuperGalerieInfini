@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using VsGalerie.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,15 +18,46 @@ namespace VsGalerie.Controllers
         UserManager<User> userManager;
         RoleManager<IdentityRole> roleManager;
 
-        public AccountController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<User> userManager)
         {
             this.userManager = userManager;
-            this.roleManager = roleManager;
         }
 
         // POST api/Account/Login
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginDTO login)
+        {
+            User user = await userManager.FindByNameAsync(login.UserName);
+            if (user != null && await userManager.CheckPasswordAsync(user, login.Password))
+            {
+                IList<string> roles = await userManager.GetRolesAsync(user);
 
-       
+                List<Claim> authClaims = new List<Claim>();
+                foreach (string role in roles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, role));
+                }
+                authClaims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+                SymmetricSecurityKey authkey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Salut chut secret"));
+                JwtSecurityToken token = new JwtSecurityToken(
+                    issuer: "https://localhost:7278",
+                    audience: "http://localhost:4200",
+                    claims: authClaims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: new SigningCredentials(authkey, SecurityAlgorithms.HmacSha256)
+                    );
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    validTo = token.ValidTo
+                });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Error = "L'utilisateur est introuvable ou le mot de passe ne concorde pas" });
+            }
+        }
+
 
         // POST: api/<AccountController>
         [HttpPost]
