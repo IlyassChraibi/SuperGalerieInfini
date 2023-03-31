@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using VsGalerie.Models;
 
 namespace VsGalerie.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[Action]")]
     [ApiController]
     public class GaleriesController : ControllerBase
     {
@@ -90,10 +91,28 @@ namespace VsGalerie.Controllers
           {
               return Problem("Entity set 'VsGalerieContext.Galerie'  is null.");
           }
-            _context.Galerie.Add(galerie);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGalerie", new { id = galerie.Id }, galerie);
+            //trouver l'utilisateur via son token
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
+            if(user != null)
+            {
+                if (galerie.User == null)
+                {
+                    galerie.User = new List<User>();
+                }
+                galerie.User.Add(user);
+                user.Galeries.Add(galerie);
+
+                // On ajoute l'objet dan sla BD
+                _context.Galerie.Add(galerie);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetGalerie", new { id = galerie.Id }, galerie);
+            }
+
+            return StatusCode(StatusCodes.Status400BadRequest, new {Message = "Utilisateur non trouvé."});
+
         }
 
         // DELETE: api/Galeries/5

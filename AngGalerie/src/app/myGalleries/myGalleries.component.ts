@@ -1,3 +1,4 @@
+import { GalerieService } from './../service/galerie.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyGalleriesComponent implements OnInit {
 
-  constructor() { }
+  name : string = "";
+  isPublic !: boolean ;
+  constructor(public galerieService : GalerieService) { }
 
   ngOnInit() {
+  }
+
+  async create() : Promise<void>{
+
+    this.galerieService.postGalerie(this.name, this.isPublic);
+   
   }
 
 }

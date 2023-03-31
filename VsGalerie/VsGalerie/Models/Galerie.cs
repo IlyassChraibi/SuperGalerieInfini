@@ -6,9 +6,9 @@ namespace VsGalerie.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool Public { get; set; }
+        public bool IsPublic { get; set; }
         [JsonIgnore]
-        public virtual List<User> User { get; set; }
+        public virtual List<User>? User { get; set; }
 
     }
 }
