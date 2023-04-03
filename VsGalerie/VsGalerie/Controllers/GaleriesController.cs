@@ -30,7 +30,16 @@ namespace VsGalerie.Controllers
           {
               return NotFound();
           }
-            return await _context.Galerie.ToListAsync();
+
+            //trouver l'utilisateur via son token
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
+            if (user != null)
+            {
+                return user.Galeries;
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });
         }
 
         // GET: api/Galeries/5

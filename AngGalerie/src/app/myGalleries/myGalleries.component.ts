@@ -13,6 +13,7 @@ export class MyGalleriesComponent implements OnInit {
   constructor(public galerieService : GalerieService) { }
 
   ngOnInit() {
+    this.galerieService.getGAleries();
   }
 
   async create() : Promise<void>{

@@ -33,4 +33,10 @@ async postGalerie(name : string, isPublic : boolean): Promise<void>{
   this.galeries.push(x);
 }
 
+async getGAleries() : Promise<void>{
+  let x = await lastValueFrom(this.http.get<Galerie[]>("https://localhost:7278/api/Galeries/GetGalerie"));
+  console.log(x);
+  this.galeries = x;
+}
+
 }
