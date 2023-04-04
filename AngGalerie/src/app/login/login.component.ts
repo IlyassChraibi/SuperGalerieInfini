@@ -27,7 +27,14 @@ export class LoginComponent implements OnInit {
     let x = await lastValueFrom(this.http.post<any>("https://localhost:7278/api/Account/Login",loginDTO));
     console.log(x); 
 
+
     localStorage.setItem("token", x.token);
+
+    if(x.token == null)
+    {   
+      return console.error("Token null");
+      }
+
   }
 
 }

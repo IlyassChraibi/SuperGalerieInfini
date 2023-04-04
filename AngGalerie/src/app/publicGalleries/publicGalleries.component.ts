@@ -10,6 +10,7 @@ export class PublicGalleriesComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }
