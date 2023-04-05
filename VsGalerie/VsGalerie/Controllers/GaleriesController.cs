@@ -15,10 +15,12 @@ namespace VsGalerie.Controllers
     [ApiController]
     public class GaleriesController : ControllerBase
     {
-        private readonly VsGalerieContext _context;
+        private readonly GaleriesService GaleriesService;
+        protected readonly VsGalerieContext _context;
 
-        public GaleriesController(VsGalerieContext context)
+        public GaleriesController(GaleriesService galeriesService, VsGalerieContext context)
         {
+            GaleriesService = galeriesService;
             _context = context;
         }
 
@@ -26,38 +28,48 @@ namespace VsGalerie.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Galerie>>> GetGalerie()
         {
-          if (_context.Galerie == null)
-          {
-              return NotFound();
-          }
-
-            //trouver l'utilisateur via son token
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User? user = await _context.Users.FindAsync(userId);
-
-            if (user != null)
+            /*if (_context.Galerie == null)
             {
-                return user.Galeries;
+                return NotFound();
             }
-            return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });
+
+              //trouver l'utilisateur via son token
+              string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+              User? user = await _context.Users.FindAsync(userId);
+
+              if (user != null)
+              {
+                  return user.Galeries;
+              }
+              return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });*/
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });
+            }
+            return Ok(await GaleriesService.GetAll(userId));
         }
 
         // GET: api/Galeries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Galerie>> GetGalerie(int id)
         {
-          if (_context.Galerie == null)
-          {
-              return NotFound();
-          }
-            var galerie = await _context.Galerie.FindAsync(id);
+            /* if (_context.Galerie == null)
+             {
+                 return NotFound();
+             }
+               var galerie = await _context.Galerie.FindAsync(id);
 
-            if (galerie == null)
-            {
-                return NotFound();
-            }
+               if (galerie == null)
+               {
+                   return NotFound();
+               }
 
-            return galerie;
+               return galerie;*/
+            Galerie? galerie = await GaleriesService.Get(id);
+            return Ok(galerie);
         }
 
         // PUT: api/Galeries/5
@@ -70,22 +82,11 @@ namespace VsGalerie.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(galerie).State = EntityState.Modified;
+            Galerie? updatedGalerie = await GaleriesService.Put(id, galerie);
 
-            try
+            if (updatedGalerie == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GalerieExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Le chat a été supprimé ou modifié. Veuillez réessayer" });
             }
 
             return NoContent();
@@ -96,31 +97,39 @@ namespace VsGalerie.Controllers
         [HttpPost]
         public async Task<ActionResult<Galerie>> PostGalerie(Galerie galerie)
         {
-          if (_context.Galerie == null)
-          {
-              return Problem("Entity set 'VsGalerieContext.Galerie'  is null.");
-          }
+            /* if (_context.Galerie == null)
+             {
+                 return Problem("Entity set 'VsGalerieContext.Galerie'  is null.");
+             }
 
-            //trouver l'utilisateur via son token
+               //trouver l'utilisateur via son token
+               string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+               User? user = await _context.Users.FindAsync(userId);
+
+               if(user != null)
+               {
+                   if (galerie.User == null)
+                   {
+                       galerie.User = new List<User>();
+                   }
+                   galerie.User.Add(user);
+                   user.Galeries.Add(galerie);
+
+                   // On ajoute l'objet dan sla BD
+                   _context.Galerie.Add(galerie);
+                   await _context.SaveChangesAsync();
+                   return CreatedAtAction("GetGalerie", new { id = galerie.Id }, galerie);
+               }
+
+               return StatusCode(StatusCodes.Status400BadRequest, new {Message = "Utilisateur non trouvé."});*/
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            User? user = await _context.Users.FindAsync(userId);
-
-            if(user != null)
+            Galerie? newGalerie = await GaleriesService.Post(galerie,userId);
+            if (newGalerie == null)
             {
-                if (galerie.User == null)
-                {
-                    galerie.User = new List<User>();
-                }
-                galerie.User.Add(user);
-                user.Galeries.Add(galerie);
-
-                // On ajoute l'objet dan sla BD
-                _context.Galerie.Add(galerie);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetGalerie", new { id = galerie.Id }, galerie);
+                return Problem("Entity set 'labo8VsContext.Cat'  is null.");
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, new {Message = "Utilisateur non trouvé."});
+            return CreatedAtAction("GetGalerie", new { id = galerie.Id }, newGalerie);
 
         }
 
