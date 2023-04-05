@@ -65,7 +65,7 @@ namespace VsGalerie.Data
             {
                 Id = 3,
                 Name = "sym1",
-                IsPublic = false,
+                IsPublic = true,
             }, new Galerie
             {
                 Id = 4,

@@ -52,6 +52,37 @@ namespace VsGalerie.Controllers
             return Ok(await GaleriesService.GetAll(userId));
         }
 
+        // GET: api/GaleriesPublic
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Galerie>>> GetGaleriePublic()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Message = "Utilisateur non trouvé." });
+            }
+
+            // Récupérer toutes les galeries publiques
+            List<Galerie> publicGaleries = await _context.Galerie
+                .Where(g => g.IsPublic)
+                .ToListAsync();
+
+            // Récupérer toutes les galeries de l'utilisateur connecté
+            List<Galerie> userGaleries = await _context.Galerie
+                .Where(g => g.User.Contains(user))
+                .ToListAsync();
+
+            // Supprimer les galeries de l'utilisateur connecté de la liste des galeries publiques
+            foreach (Galerie galerie in userGaleries)
+            {
+                publicGaleries.Remove(galerie);
+            }
+
+            return publicGaleries;
+        }
+
         // GET: api/Galeries/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Galerie>> GetGalerie(int id)

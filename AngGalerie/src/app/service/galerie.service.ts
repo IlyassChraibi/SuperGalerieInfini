@@ -13,6 +13,10 @@ export class GalerieService {
 
 constructor(public http: HttpClient) { }
 
+logout(){
+  localStorage.removeItem("token");
+}
+
 async postGalerie(name : string, isPublic : boolean): Promise<void>{
 
   /*let token = localStorage.getItem("token");
@@ -46,4 +50,17 @@ async getGAleries() : Promise<void>{
   this.galeries = x;
 }
 
+async getGAleriesPublic() : Promise<void>{
+  /* let token = localStorage.getItem("token");
+   const httpOptions = {
+     headers: new HttpHeaders({
+       'Content-Type':  'application/json',
+       'Authorization': 'Bearer ' + token
+     })
+   };*/
+ 
+   let x = await lastValueFrom(this.http.get<Galerie[]>("https://localhost:7278/api/Galeries/GetGaleriePublic"));
+   console.log(x);
+   this.galeries = x;
+ }
 }
