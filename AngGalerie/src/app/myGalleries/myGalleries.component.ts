@@ -1,5 +1,6 @@
 import { GalerieService } from './../service/galerie.service';
 import { Component, OnInit } from '@angular/core';
+import { Galerie } from '../model/Galerie';
 
 @Component({
   selector: 'app-myGalleries',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyGalleriesComponent implements OnInit {
 
+  galerieMy !: Galerie;
   name : string = "";
   isPublic !: boolean ;
   constructor(public galerieService : GalerieService) { }
@@ -22,4 +24,9 @@ export class MyGalleriesComponent implements OnInit {
    
   }
 
+  onSelectGalerie(galerie: Galerie) {
+    // Réagir à la sélection d'une galerie
+    this.galerieMy = galerie;
+    console.log('Galerie sélectionnée :', galerie);
+  }
 }

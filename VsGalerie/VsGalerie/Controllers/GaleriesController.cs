@@ -108,20 +108,19 @@ namespace VsGalerie.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGalerie(int id, Galerie galerie)
         {
-            if (id != galerie.Id)
-            {
-                return BadRequest();
-            }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Galerie? updatedGalerie = await GaleriesService.Put(id, galerie);
+            // Appeler la méthode Put du service générique GaleriesService pour mettre à jour la galerie
+            Galerie updatedGalerie = await GaleriesService.Put(id, galerie, userId);
 
             if (updatedGalerie == null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "Le chat a été supprimé ou modifié. Veuillez réessayer" });
+                return NotFound(); // Retourner un statut 404 Not Found si la galerie n'est pas trouvée
             }
 
-            return NoContent();
+            return NoContent(); // Retourner un statut 204 No Content pour indiquer
         }
+
 
         // POST: api/Galeries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

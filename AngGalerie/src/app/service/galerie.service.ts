@@ -36,6 +36,10 @@ async postGalerie(name : string, isPublic : boolean): Promise<void>{
   this.galeries.push(x);
 }
 
+updateInfo(){
+  this.getGAleries();
+}
+
 async getGAleries() : Promise<void>{
  /* let token = localStorage.getItem("token");
   const httpOptions = {
@@ -62,5 +66,15 @@ async getGAleriesPublic() : Promise<void>{
    let x = await lastValueFrom(this.http.get<Galerie[]>("https://localhost:7278/api/Galeries/GetGaleriePublic"));
    console.log(x);
    this.galeries = x;
+ }
+
+ async putGaleries(id:number, name:string, isPublic : boolean) : Promise<void>{
+
+   let updatedGalerie = new Galerie(id, name, isPublic);
+
+   let x = await lastValueFrom(this.http.put<Galerie>("https://localhost:7278/api/Galeries/PutGalerie/"+ id, updatedGalerie));
+   console.log(x);
+   updatedGalerie = x;
+   this.updateInfo();
  }
 }
