@@ -192,17 +192,22 @@ namespace VsGalerie.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGalerie(int id)
         {
-            if (_context.Galerie == null)
-            {
-                return NotFound();
-            }
-            var galerie = await _context.Galerie.FindAsync(id);
-            if (galerie == null)
-            {
-                return NotFound();
-            }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
 
-            _context.Galerie.Remove(galerie);
+            // Vérifier si la galerie appartient à l'utilisateur connecté
+            Galerie existingGalerie = await _context.Galerie.FindAsync(id);
+            if (existingGalerie == null)
+            {
+                return NotFound(); // Retourner un statut 404 Not Found si la galerie n'est pas trouvée
+            }
+
+            if (!existingGalerie.User.Any(u => u.Id == userId))
+            {
+                return Forbid(); // Retourner un statut 403 Forbidden si la galerie n'appartient pas à l'utilisateur connecté
+            }
+
+            _context.Galerie.Remove(existingGalerie);
             await _context.SaveChangesAsync();
 
             return NoContent();

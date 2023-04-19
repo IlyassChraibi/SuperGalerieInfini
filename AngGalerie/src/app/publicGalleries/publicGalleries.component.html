@@ -11,40 +11,10 @@
 
     <div class="col-1 galleryList">
       <!-- Photos de couverture de galeries -->
-     <div class="galleryThumbnail">
-      <div>Galerie #1</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #2</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #2">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #3</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #3">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #4</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #4">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #5</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #5">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #6</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #6">
-     </div>
-
-     <div class="galleryThumbnail">
-      <div>Galerie #7</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #7">
-     </div>
+      <div *ngFor="let galerie of galerieService.galeries" class="galleryThumbnail">
+        <div>{{galerie.name}}</div>
+        <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+       </div>
 
     </div>
   

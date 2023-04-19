@@ -85,4 +85,11 @@ async rendrePrivee(id: number, name: string): Promise<void> {
   this.updateInfo();
 }
 
+async deleteGalerie(id: number) : Promise<void>{
+
+   let x = await lastValueFrom(this.http.delete<Galerie[]>("https://localhost:7278/api/Galeries/DeleteGalerie/"+ id));
+   console.log(x);
+   this.galeries = x;
+   this.updateInfo();
+ }
 }

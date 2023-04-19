@@ -55,7 +55,7 @@
 
         <!-- Supprimer la galerie -->
         <div class="option">
-          <button mat-raised-button color="warn">Supprimer la galerie <mat-icon>delete</mat-icon></button>
+          <button (click)="this.galerieService.deleteGalerie(this.galerieMy.id)" mat-raised-button color="warn">Supprimer la galerie <mat-icon>delete</mat-icon></button>
         </div>
       </div>
 
