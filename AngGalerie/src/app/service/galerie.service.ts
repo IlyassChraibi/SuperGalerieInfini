@@ -1,3 +1,4 @@
+import { MyGalleriesComponent } from './../myGalleries/myGalleries.component';
 import { Galerie } from './../model/Galerie';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -68,13 +69,20 @@ async getGAleriesPublic() : Promise<void>{
    this.galeries = x;
  }
 
- async putGaleries(id:number, name:string, isPublic : boolean) : Promise<void>{
+ async rendrePublique(id: number, name: string): Promise<void> {
+  let updatedGalerie = new Galerie(id, name, true);
+  let x = await lastValueFrom(this.http.put<Galerie>("https://localhost:7278/api/Galeries/PutGalerie/"+ id, updatedGalerie));
+  console.log(x);
+  updatedGalerie = x;
+  this.updateInfo();
+}
 
-   let updatedGalerie = new Galerie(id, name, isPublic);
+async rendrePrivee(id: number, name: string): Promise<void> {
+  let updatedGalerie = new Galerie(id, name, false);
+  let x = await lastValueFrom(this.http.put<Galerie>("https://localhost:7278/api/Galeries/PutGalerie/"+ id, updatedGalerie));
+  console.log(x);
+  updatedGalerie = x;
+  this.updateInfo();
+}
 
-   let x = await lastValueFrom(this.http.put<Galerie>("https://localhost:7278/api/Galeries/PutGalerie/"+ id, updatedGalerie));
-   console.log(x);
-   updatedGalerie = x;
-   this.updateInfo();
- }
 }

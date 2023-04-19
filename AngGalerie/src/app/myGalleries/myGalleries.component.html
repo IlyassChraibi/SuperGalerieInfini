@@ -49,8 +49,8 @@
 
         <!-- Changer la visibilité -->
         <div class="option">
-          <button (click)="this.galerieService.putGaleries(this.galerieMy.id, this.galerieMy.name, this.galerieMy.isPublic)" mat-raised-button>Rendre privée <mat-icon>verified_user</mat-icon></button>
-          <button (click)="this.galerieService.putGaleries(this.galerieMy.id, this.galerieMy.name, this.galerieMy.isPublic)" mat-raised-button>Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
+          <button (click)="this.galerieService.rendrePrivee(this.galerieMy.id, this.galerieMy.name)" mat-raised-button>Rendre privée <mat-icon>verified_user</mat-icon></button>
+          <button (click)="this.galerieService.rendrePublique(this.galerieMy.id, this.galerieMy.name)" mat-raised-button>Rendre publique	<mat-icon>remove_red_eye</mat-icon></button>
         </div>
 
         <!-- Supprimer la galerie -->

@@ -49,47 +49,16 @@ namespace VsGalerie.Data
         }
 
 
-        public async Task<T?> Put(int id, T t, string userId) 
+        /*public async Task<T?> Put(int id, T t, string userId) 
         {
             // Rechercher l'utilisateur dans la base de données
-            User user = await _context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                return null; // Retourner null si l'utilisateur n'est pas trouvé
-            }
-
-            // Vérifier si la galerie existe
-            T existingGalerie = await _context.FindAsync<T>(id);
-            if (existingGalerie == null)
-            {
-                return null;
-            }
 
             // Vérifier si l'utilisateur est propriétaire de la galerie
-            PropertyInfo userIdProperty = existingGalerie.GetType().GetProperty("UserId");
-            if (userIdProperty != null)
-            {
-                string existingUserId = userIdProperty.GetValue(existingGalerie)?.ToString();
-                if (existingUserId != userId)
-                {
-                    return null;
-                }
-            }
 
-            // Mettre à jour la visibilité de la galerie
-            PropertyInfo isPublicProperty = existingGalerie.GetType().GetProperty("IsPublic");
-            if (isPublicProperty != null)
-            {
-                // Inverser la valeur de la propriété 'IsPublic' de la galerie existante
-                isPublicProperty.SetValue(existingGalerie, !(bool)isPublicProperty.GetValue(existingGalerie));
-            }
 
             // Mettre à jour la galerie dans la base de données
-            _context.Update(existingGalerie);
-            await _context.SaveChangesAsync();
 
-            return existingGalerie;
-        }
+        }*/
 
 
         public virtual async Task<T?> Post(T t, string userId)

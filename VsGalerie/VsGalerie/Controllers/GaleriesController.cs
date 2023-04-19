@@ -108,18 +108,43 @@ namespace VsGalerie.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGalerie(int id, Galerie galerie)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Récupérer l'ID de l'utilisateur actuellement connecté
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
 
-            // Appeler la méthode Put du service générique GaleriesService pour mettre à jour la galerie
-            Galerie updatedGalerie = await GaleriesService.Put(id, galerie, userId);
-
-            if (updatedGalerie == null)
+            // Vérifier si la galerie appartient à l'utilisateur connecté
+            Galerie existingGalerie = await _context.Galerie.FindAsync(id);
+            if (existingGalerie == null)
             {
                 return NotFound(); // Retourner un statut 404 Not Found si la galerie n'est pas trouvée
+            }
+
+            if (!existingGalerie.User.Any(u => u.Id == userId))
+            {
+                return Forbid(); // Retourner un statut 403 Forbidden si la galerie n'appartient pas à l'utilisateur connecté
+            }
+
+            // Mettre à jour la visibilité de la galerie
+            existingGalerie.IsPublic = galerie.IsPublic;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (await _context.Galerie.FindAsync(id) == null)
+                {
+                    return NotFound(); // Retourner un statut 404 Not Found si la galerie n'est pas trouvée
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            return NoContent(); // Retourner un statut 204 No Content pour indiquer
-        }
+            return NoContent(); // Retourner un statut 204 No Content pour indiquer que la mise à jour a réussi
+        }
 
 
         // POST: api/Galeries
