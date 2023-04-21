@@ -146,6 +146,35 @@ namespace VsGalerie.Controllers
             return NoContent(); // Retourner un statut 204 No Content pour indiquer que la mise à jour a réussi
         }
 
+        [HttpPut("PutGalerie/{id}/{username}")]
+        public async Task<ActionResult<Galerie>> PutGalerieCollabo(int id, string username)
+        {
+            var galerie = await _context.Galerie.FindAsync(id);
+            if (galerie == null)
+            {
+                return NotFound();
+            }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            User? user = await _context.Users.FindAsync(userId);
+
+            User UserPartager = _context.Users.FirstOrDefault(u => u.NormalizedUserName == username.ToUpper());
+
+            if (galerie.User.Contains(UserPartager))
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { MessagePack = "Utilisateur déjà partagé"}); 
+            }
+
+            if (UserPartager == null)
+            {
+                return BadRequest("User not found.");
+            }
+
+            galerie.User.Add(UserPartager);
+            await _context.SaveChangesAsync();
+
+            return galerie;
+        }
+
 
         // POST: api/Galeries
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -187,6 +216,8 @@ namespace VsGalerie.Controllers
             return CreatedAtAction("GetGalerie", new { id = galerie.Id }, newGalerie);
 
         }
+
+       
 
         // DELETE: api/Galeries/5
         [HttpDelete("{id}")]

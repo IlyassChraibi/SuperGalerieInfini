@@ -11,6 +11,7 @@ export class MyGalleriesComponent implements OnInit {
 
   galerieMy !: Galerie;
   name : string = "";
+  username : string="";
   isPublic !: boolean ;
   constructor(public galerieService : GalerieService) { }
 
@@ -21,6 +22,12 @@ export class MyGalleriesComponent implements OnInit {
   async create() : Promise<void>{
 
     this.galerieService.postGalerie(this.name, this.isPublic);
+   
+  }
+
+  async partager() : Promise<void>{
+
+    this.galerieService.addCollabo(this.galerieMy.id, this.username, this.galerieMy);
    
   }
 

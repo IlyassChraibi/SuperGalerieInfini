@@ -19,16 +19,17 @@ export class LoginComponent implements OnInit {
   }
 
   async login() : Promise<void>{
-    // Retourner à la page d'accueil
-    this.router.navigate(['/publicGalleries']);
-
+   
     let loginDTO = new LoginDTO(this.loginUsername, this.loginPassword);
 
     let x = await lastValueFrom(this.http.post<any>("https://localhost:7278/api/Account/Login",loginDTO));
     console.log(x); 
 
-
     localStorage.setItem("token", x.token);
+
+       // Retourner à la page d'accueil
+       this.router.navigate(['/publicGalleries']);
+
 
     if(x.token == null)
     {   

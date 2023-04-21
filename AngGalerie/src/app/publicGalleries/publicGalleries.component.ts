@@ -10,7 +10,7 @@ export class PublicGalleriesComponent implements OnInit {
 
   constructor(public galerieService : GalerieService) { }
 
-  ngOnInit() {
-    this.galerieService.getGAleriesPublic();
+  async ngOnInit() : Promise<void> {
+    await this.galerieService.getGAleriesPublic();
   }
 }

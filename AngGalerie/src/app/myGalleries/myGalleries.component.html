@@ -43,8 +43,8 @@
 
         <!-- Partager la galerie -->
         <div class="option">
-          <input type="text" name="newOwnerUsername" placeholder="Nom d'utilisateur">
-          <button mat-raised-button color="primary">Partager la galerie <mat-icon>supervised_user_circle</mat-icon></button>
+          <input type="text" name="newOwnerUsername" placeholder="Nom d'utilisateur" [(ngModel)]="username">
+          <button (click)="partager()" mat-raised-button color="primary">Partager la galerie <mat-icon>supervised_user_circle</mat-icon></button>
         </div>
 
         <!-- Changer la visibilité -->

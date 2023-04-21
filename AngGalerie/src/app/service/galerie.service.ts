@@ -92,4 +92,14 @@ async deleteGalerie(id: number) : Promise<void>{
    this.galeries = x;
    this.updateInfo();
  }
+
+ async addCollabo(id: number, username: string, galerie : Galerie): Promise<void> {
+  let updatedGalerie = galerie;
+  let x = await lastValueFrom(this.http.put<Galerie>("https://localhost:7278/api/Galeries/PutGalerieCollabo/PutGalerie/"+ id+"/"+username, updatedGalerie));
+ // console.log(id + username + updatedGalerie)
+  console.log(x);
+ // this.galeries = x;
+  this.updateInfo();
+}
+
 }
