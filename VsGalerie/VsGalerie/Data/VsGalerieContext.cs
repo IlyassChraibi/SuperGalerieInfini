@@ -85,5 +85,7 @@ namespace VsGalerie.Data
         }
 
         public DbSet<VsGalerie.Models.Galerie> Galerie { get; set; } = default!;
+
+        public DbSet<VsGalerie.Models.Picture>? Picture { get; set; }
     }
 }

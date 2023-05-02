@@ -38,8 +38,10 @@
        <div class="options">
         <!-- Changer la couverture (Partie 2 !!) -->
         <div class="option">
-          <input type="file" name="coverPicture"><button mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button>
-        </div>
+          <input #fileuploadviewchild type="file" name="image" accept="image/*">          
+          <button (click)="this.galerieService.uploadViewChild()">Envoyer</button>
+          <button mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button> 
+      </div>
 
         <!-- Partager la galerie -->
         <div class="option">

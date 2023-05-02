@@ -1,7 +1,7 @@
 import { MyGalleriesComponent } from './../myGalleries/myGalleries.component';
 import { Galerie } from './../model/Galerie';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import { FactoryOrValue, lastValueFrom } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,7 @@ export class GalerieService {
 
   galeries : Galerie[] = [];
   newGalerie ?: Galerie;
+  @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
 
 constructor(public http: HttpClient) { }
 
@@ -18,16 +19,26 @@ logout(){
   localStorage.removeItem("token");
 }
 
+async uploadViewChild() {
+if(this.pictureInput == undefined){
+  console.log("Input HTML non chargé.");
+  return;
+}
+
+  let file = this.pictureInput.nativeElement.files[0];
+  if(file == null){
+    console.log("Input HTML ne contient aucune image.");
+    return;
+  }
+  let formData = new FormData();
+  formData.append('monImage', file, file.name);
+
+  let x = await lastValueFrom(this.http.post('https://localhost:7278/api/Pictures/PostPicture',formData));
+  console.log(x);
+}
+
+
 async postGalerie(name : string, isPublic : boolean): Promise<void>{
-
-  /*let token = localStorage.getItem("token");
-  const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'Bearer ' + token
-    })
-  };*/
-
    this.newGalerie = new Galerie(0, name, isPublic);
 
   let x = await lastValueFrom(this.http.post<Galerie>('https://localhost:7278/api/Galeries/PostGalerie' , this.newGalerie));
@@ -42,28 +53,12 @@ updateInfo(){
 }
 
 async getGAleries() : Promise<void>{
- /* let token = localStorage.getItem("token");
-  const httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-      'Authorization': 'Bearer ' + token
-    })
-  };*/
-
   let x = await lastValueFrom(this.http.get<Galerie[]>("https://localhost:7278/api/Galeries/GetGalerie"));
   console.log(x);
   this.galeries = x;
 }
 
-async getGAleriesPublic() : Promise<void>{
-  /* let token = localStorage.getItem("token");
-   const httpOptions = {
-     headers: new HttpHeaders({
-       'Content-Type':  'application/json',
-       'Authorization': 'Bearer ' + token
-     })
-   };*/
- 
+async getGAleriesPublic() : Promise<void>{ 
    let x = await lastValueFrom(this.http.get<Galerie[]>("https://localhost:7278/api/Galeries/GetGaleriePublic"));
    console.log(x);
    this.galeries = x;
