@@ -86,16 +86,18 @@ namespace VsGalerie.Controllers
         // POST: api/Pictures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Picture>> PostPicture(Picture picture)
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult<Picture>> PostPicture(int galerieId)
         {
             try
             {
                 IFormCollection formCollection = await Request.ReadFormAsync();
-                IFormFile? file = formCollection.Files.First();
+                IFormFile? file = formCollection.Files.GetFile("monImage");
                 if (file != null)
                 {
                     Image image = Image.Load(file.OpenReadStream());
 
+                    Picture picture = new Picture();
                     
                     picture.MimeType = file.ContentType;
                     picture.FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
@@ -111,9 +113,9 @@ namespace VsGalerie.Controllers
 
                     image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
 
-                    _context.Entry(picture).State = EntityState.Modified;
+                     _context.Picture.Add(picture);
                     await _context.SaveChangesAsync();
-
+                    return NoContent();
                 }
                 else
                 {
@@ -124,7 +126,7 @@ namespace VsGalerie.Controllers
             {
                 throw;
             }
-            return Ok();
+            
         }
 
         // DELETE: api/Pictures/5

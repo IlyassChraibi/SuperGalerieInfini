@@ -10,5 +10,6 @@ namespace VsGalerie.Models
         [JsonIgnore]
         public virtual List<User>? User { get; set; }
 
+        public virtual List<Picture> Pictures { get; set; }
     }
 }

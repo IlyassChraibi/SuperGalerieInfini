@@ -1,6 +1,8 @@
 import { GalerieService } from './../service/galerie.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Galerie } from '../model/Galerie';
+import { lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-myGalleries',
@@ -13,11 +15,33 @@ export class MyGalleriesComponent implements OnInit {
   name : string = "";
   username : string="";
   isPublic !: boolean ;
-  constructor(public galerieService : GalerieService) { }
+  @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
+
+  constructor(public galerieService : GalerieService, public http: HttpClient) { }
 
   ngOnInit() {
     this.galerieService.getGAleries();
   }
+
+  async uploadViewChild() {
+    if(this.pictureInput == undefined){
+      console.log("Input HTML non chargé.");
+      return;
+    }
+    
+      let file = this.pictureInput.nativeElement.files[0];
+      if(file == null){
+        console.log("Input HTML ne contient aucune image.");
+        return;
+      }
+      let formData = new FormData();
+      formData.append('monImage', file, file.name);
+    
+      let x = await lastValueFrom(this.http.post<any>('https://localhost:7278/api/Pictures/PostPicture/'+ this.galerieMy.id,formData));
+
+      console.log(x);
+    }
+    
 
   async create() : Promise<void>{
 

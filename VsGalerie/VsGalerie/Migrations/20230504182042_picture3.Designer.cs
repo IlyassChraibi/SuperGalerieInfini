@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VsGalerie.Data;
 
@@ -11,9 +12,10 @@ using VsGalerie.Data;
 namespace VsGalerie.Migrations
 {
     [DbContext(typeof(VsGalerieContext))]
-    partial class VsGalerieContextModelSnapshot : ModelSnapshot
+    [Migration("20230504182042_picture3")]
+    partial class picture3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace VsGalerie.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GalerieUser", (string)null);
+                    b.ToTable("GalerieUser");
 
                     b.HasData(
                         new
@@ -209,7 +211,7 @@ namespace VsGalerie.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Galerie", (string)null);
+                    b.ToTable("Galerie");
 
                     b.HasData(
                         new
@@ -254,7 +256,7 @@ namespace VsGalerie.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Picture", (string)null);
+                    b.ToTable("Picture");
                 });
 
             modelBuilder.Entity("VsGalerie.Models.User", b =>

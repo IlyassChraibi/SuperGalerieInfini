@@ -11,32 +11,12 @@ export class GalerieService {
 
   galeries : Galerie[] = [];
   newGalerie ?: Galerie;
-  @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
 
 constructor(public http: HttpClient) { }
 
 logout(){
   localStorage.removeItem("token");
 }
-
-async uploadViewChild() {
-if(this.pictureInput == undefined){
-  console.log("Input HTML non chargé.");
-  return;
-}
-
-  let file = this.pictureInput.nativeElement.files[0];
-  if(file == null){
-    console.log("Input HTML ne contient aucune image.");
-    return;
-  }
-  let formData = new FormData();
-  formData.append('monImage', file, file.name);
-
-  let x = await lastValueFrom(this.http.post('https://localhost:7278/api/Pictures/PostPicture',formData));
-  console.log(x);
-}
-
 
 async postGalerie(name : string, isPublic : boolean): Promise<void>{
    this.newGalerie = new Galerie(0, name, isPublic);

@@ -38,8 +38,6 @@
        <div class="options">
         <!-- Changer la couverture (Partie 2 !!) -->
         <div class="option">
-          <input #fileuploadviewchild type="file" name="image" accept="image/*">          
-          <button (click)="this.galerieService.uploadViewChild()">Envoyer</button>
           <button mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button> 
       </div>
 
@@ -64,6 +62,22 @@
       <hr>
       <!-- Photos de la galerie sélectionnée (Partie 2 !) -->
       <h2>Photos de la galerie sélectionnée <mat-icon>photo_camera</mat-icon></h2>
+
+      <div class="option">
+        <input #fileuploadviewchild type="file" name="image" accept="image/*">          
+        <button (click)="uploadViewChild()">Envoyer</button>
+    </div>
+
+
+    <div *ngIf="galerieMy!= null" class="col-1 ">
+      <!-- Photos de couverture de galeries -->
+     <div class="galleryThumbnail">
+      <div>{{galerieMy.name}}</div>
+      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+     </div>
+
+    </div>
+    
     </div>
 
   </div>

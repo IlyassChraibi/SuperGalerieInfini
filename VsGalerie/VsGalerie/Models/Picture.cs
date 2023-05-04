@@ -1,10 +1,13 @@
-﻿namespace VsGalerie.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace VsGalerie.Models
 {
     public class Picture
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
         public string? FileName { get; set; }
         public string? MimeType { get; set; }
+
+        public virtual Galerie Galerie { get; set; }
     }
 }
