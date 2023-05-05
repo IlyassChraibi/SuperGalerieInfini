@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +38,8 @@ namespace VsGalerie.Controllers
 
         // GET: api/Pictures/5
         [HttpGet("{size}/{id}")]
-        public async Task<ActionResult<Picture>> GetPicture(int id)
+        [AllowAnonymous]
+        public async Task<ActionResult<Picture>> GetPicture(string size, int id)
         {
           if (_context.Picture == null)
           {
@@ -44,12 +47,17 @@ namespace VsGalerie.Controllers
           }
             var picture = await _context.Picture.FindAsync(id);
 
-            if (picture == null)
+            if (picture == null || picture.FileName == null || picture.MimeType == null)
             {
-                return NotFound();
+                return NotFound(new { Message = "cette photo n'exitse pas"});
             }
 
-            return picture;
+            if (!(Regex.Match(size, "lg|sm").Success))
+            {
+                return BadRequest(new { Message = "La taille demandée est inadéquate" });
+            }
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/" + size + "/" + picture.FileName);
+            return File(bytes, picture.MimeType);
         }
 
         // PUT: api/Pictures/5
@@ -85,7 +93,7 @@ namespace VsGalerie.Controllers
 
         // POST: api/Pictures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("{galerieId}")]
         [DisableRequestSizeLimit]
         public async Task<ActionResult<Picture>> PostPicture(int galerieId)
         {
@@ -113,9 +121,10 @@ namespace VsGalerie.Controllers
 
                     image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
 
-                     _context.Picture.Add(picture);
+                    Galerie galerie = await _context.Galerie.FindAsync(galerieId);
+                    galerie.Pictures.Add(picture);
                     await _context.SaveChangesAsync();
-                    return NoContent();
+                    return Ok(picture);
                 }
                 else
                 {

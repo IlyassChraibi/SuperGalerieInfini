@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Galerie } from '../model/Galerie';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Picture } from '../model/Picture';
 
 @Component({
   selector: 'app-myGalleries',
@@ -13,6 +14,7 @@ export class MyGalleriesComponent implements OnInit {
 
   galerieMy !: Galerie;
   name : string = "";
+  pictures: Picture[] = [];
   username : string="";
   isPublic !: boolean ;
   @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
@@ -39,7 +41,19 @@ export class MyGalleriesComponent implements OnInit {
     
       let x = await lastValueFrom(this.http.post<any>('https://localhost:7278/api/Pictures/PostPicture/'+ this.galerieMy.id,formData));
 
+      if (x != null) {
+        let newPicture = x as Picture;
+        if (newPicture != null) {
+          if(this.galerieMy.pictures == null)
+          {
+            this.galerieMy.pictures = [];
+          }
+          this.galerieMy.pictures.push(newPicture);
+        }
+      }
+
       console.log(x);
+      console.log(this.galerieMy.pictures);
     }
     
 
