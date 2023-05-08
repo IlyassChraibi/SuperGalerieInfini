@@ -832,3 +832,4 @@ C:\Users\Utilisateur\Downloads\SuperGalerieInfini\VsGalerie\VsGalerie\obj\Debug\
 C:\Users\Utilisateur\Downloads\SuperGalerieInfini\VsGalerie\VsGalerie\obj\Debug\net6.0\VsGalerie.pdb
 C:\Users\Utilisateur\Downloads\SuperGalerieInfini\VsGalerie\VsGalerie\obj\Debug\net6.0\VsGalerie.genruntimeconfig.cache
 C:\Users\Utilisateur\Downloads\SuperGalerieInfini\VsGalerie\VsGalerie\obj\Debug\net6.0\ref\VsGalerie.dll
+C:\Users\Utilisateur\Desktop\SuperGalerieInfini\VsGalerie\VsGalerie\bin\Debug\net6.0\SixLabors.ImageSharp.dll

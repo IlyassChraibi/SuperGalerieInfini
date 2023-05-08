@@ -14,7 +14,6 @@ export class MyGalleriesComponent implements OnInit {
 
   galerieMy !: Galerie;
   name : string = "";
-  pictures: Picture[] = [];
   username : string="";
   isPublic !: boolean ;
   @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
@@ -44,11 +43,12 @@ export class MyGalleriesComponent implements OnInit {
       if (x != null) {
         let newPicture = x as Picture;
         if (newPicture != null) {
-          if(this.galerieMy.pictures == null)
-          {
-            this.galerieMy.pictures = [];
+          if (this.galerieMy.pictures) {
+            this.galerieMy.pictures.push(newPicture);
+          } else {
+            this.galerieMy.pictures = [newPicture];
           }
-          this.galerieMy.pictures.push(newPicture);
+          
         }
       }
 
