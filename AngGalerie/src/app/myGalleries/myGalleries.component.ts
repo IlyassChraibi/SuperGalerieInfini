@@ -17,12 +17,34 @@ export class MyGalleriesComponent implements OnInit {
   username : string="";
   isPublic !: boolean ;
   @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
+  @ViewChild('fileuploadcover', {static:false}) coverInput ?: ElementRef;
 
   constructor(public galerieService : GalerieService, public http: HttpClient) { }
 
   ngOnInit() {
     this.galerieService.getGAleries();
   }
+
+  async uploadCover() {
+    if(this.coverInput == undefined){
+      console.log("Input HTML non chargé.");
+      return;
+    }
+    
+      let file = this.coverInput.nativeElement.files[0];
+      if(file == null){
+        console.log("Input HTML ne contient aucune image.");
+        return;
+      }
+      let formData = new FormData();
+      formData.append('monImage', file, file.name);
+    
+      let x = await lastValueFrom(this.http.post<any>('https://localhost:7278/api/Pictures/PostCoverPicture/'+ this.galerieMy.id,formData));
+      console.log(x);
+      console.log('URL:', 'https://localhost:7278/api/Pictures/GetPicture/sm/' + x.id);
+
+    }
+    
 
   async uploadViewChild() {
     if(this.pictureInput == undefined){

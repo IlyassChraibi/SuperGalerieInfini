@@ -13,7 +13,9 @@
       <!-- Photos de couverture de galeries -->
      <div *ngFor="let galerie of galerieService.galeries" (click)="onSelectGalerie(galerie)" class="galleryThumbnail">
       <div>{{galerie.name}}</div>
-      <img src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+      <p>Cover ID: {{galerie.coverId}}</p>
+      <img *ngIf="galerie.coverId == 0" src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
+      <img *ngIf="galerie.coverId != 0" [src]="'https://localhost:7278/api/Pictures/GetPicture/sm/' + galerie.coverId" alt="Galerie #1">
      </div>
 
     </div>
@@ -38,7 +40,8 @@
        <div class="options">
         <!-- Changer la couverture (Partie 2 !!) -->
         <div class="option">
-          <button mat-raised-button>Changer la couverture <mat-icon>photo_library</mat-icon></button> 
+          <input #fileuploadcover type="file" name="image" accept="image/*">          
+        <button (click)="uploadCover()">Envoyer</button>
       </div>
 
         <!-- Partager la galerie -->

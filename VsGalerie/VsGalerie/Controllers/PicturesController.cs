@@ -60,6 +60,7 @@ namespace VsGalerie.Controllers
             return File(bytes, picture.MimeType);
         }
 
+
         // PUT: api/Pictures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -136,6 +137,62 @@ namespace VsGalerie.Controllers
                 throw;
             }
             
+        }
+
+        // POST: api/Pictures
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("{galerieId}")]
+        [DisableRequestSizeLimit]
+        public async Task<ActionResult<Picture>> PostCoverPicture(int galerieId)
+        {
+            try
+            {
+
+                IFormCollection formCollection = await Request.ReadFormAsync();
+                IFormFile? file = formCollection.Files.GetFile("monImage");
+                if (file != null)
+                {
+                    Image image = Image.Load(file.OpenReadStream());
+                    
+                    Picture picture = new Picture();
+
+                    picture.MimeType = file.ContentType;
+                    picture.FileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+                    image.Save(Directory.GetCurrentDirectory() + "/images/lg/" + picture.FileName);
+                    image.Mutate(i =>
+                    i.Resize(new ResizeOptions()
+                    {
+                        Mode = ResizeMode.Min,
+                        Size = new Size() { Width = 320 }
+                    })
+                    );
+
+                    image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
+
+                    Galerie galerie = await _context.Galerie.FindAsync(galerieId);
+                    galerie.CoverId = picture.Id; // Mettez à jour l'ID de la couverture avant l'ajout de l'image
+                    picture.Galerie = galerie;
+
+                    _context.Picture.Add(picture);
+                    await _context.SaveChangesAsync();
+
+                    _context.Entry(picture).State = EntityState.Modified;
+                    _context.Update(galerie);
+                    await _context.SaveChangesAsync();
+
+                    return Ok(picture);
+                }
+                else
+                {
+                    return NotFound(new { Message = "Aucune image fournie" });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         // DELETE: api/Pictures/5

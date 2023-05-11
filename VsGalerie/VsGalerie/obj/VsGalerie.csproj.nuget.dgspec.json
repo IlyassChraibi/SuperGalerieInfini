@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Utilisateur\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj": {}
+    "C:\\Users\\1925619\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Utilisateur\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj": {
+    "C:\\Users\\1925619\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Utilisateur\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj",
+        "projectUniqueName": "C:\\Users\\1925619\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj",
         "projectName": "VsGalerie",
-        "projectPath": "C:\\Users\\Utilisateur\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj",
-        "packagesPath": "C:\\Users\\Utilisateur\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Utilisateur\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\obj\\",
+        "projectPath": "C:\\Users\\1925619\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\VsGalerie.csproj",
+        "packagesPath": "C:\\Users\\1925619\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\1925619\\Desktop\\SuperGalerieInfini\\VsGalerie\\VsGalerie\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Utilisateur\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\1925619\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -89,8 +93,7 @@
             "net47",
             "net471",
             "net472",
-            "net48",
-            "net481"
+            "net48"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -102,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.311\\RuntimeIdentifierGraph.json"
         }
       }
     }

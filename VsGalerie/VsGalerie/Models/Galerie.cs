@@ -11,5 +11,7 @@ namespace VsGalerie.Models
         public virtual List<User>? User { get; set; }
         [JsonIgnore]
         public virtual List<Picture> Pictures { get; set; }
+
+        public int CoverId { get; set; }
     }
 }

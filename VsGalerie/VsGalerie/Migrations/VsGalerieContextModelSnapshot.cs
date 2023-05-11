@@ -200,6 +200,9 @@ namespace VsGalerie.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CoverId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
@@ -215,24 +218,28 @@ namespace VsGalerie.Migrations
                         new
                         {
                             Id = 1,
+                            CoverId = 0,
                             IsPublic = true,
                             Name = "tableau"
                         },
                         new
                         {
                             Id = 2,
+                            CoverId = 0,
                             IsPublic = false,
                             Name = "tableau2"
                         },
                         new
                         {
                             Id = 3,
+                            CoverId = 0,
                             IsPublic = true,
                             Name = "sym1"
                         },
                         new
                         {
                             Id = 4,
+                            CoverId = 0,
                             IsPublic = false,
                             Name = "sym2"
                         });
@@ -331,15 +338,15 @@ namespace VsGalerie.Migrations
                         {
                             Id = "21111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a8157c46-2c50-4cf8-a60e-ad6c41277efb",
+                            ConcurrencyStamp = "a24b91c1-2c0c-425c-832d-f89fd9577aaa",
                             Email = "i.i@i.ca",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "I.I@I.CA",
                             NormalizedUserName = "ILYAS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFnNmhYmEwGrFOY2HvK6VYMj5Iqns3qZDZ93grV0xaYwzaL2QWX4K53NytpCY3xDDA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJm9UAPp3Ieq6frZqmzGTPx9CBQMcA175w36jYEy1ZWHXN5nyefQqPliF8buyKlosw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "de682384-be76-46a4-afe7-e259266ef85c",
+                            SecurityStamp = "61ad8d4b-1578-4f83-af18-d5ea9295ab6b",
                             TwoFactorEnabled = false,
                             UserName = "ilyas"
                         },
@@ -347,15 +354,15 @@ namespace VsGalerie.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9addba7-4d5a-4cf1-a954-8856b375ca58",
+                            ConcurrencyStamp = "e64c6a65-13b2-4468-8e66-7d7ee19df9e5",
                             Email = "i.i@i.ca",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "I.I@I.CA",
                             NormalizedUserName = "ILYASS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHuSa8ogN+hfgXGL9ffSiLA0Ciu2v8y0BLWMCXZwE2NoAJvEFdSsTuk3wWUTBd7QSw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOl0HBDC8EaFrNYr+LQoCnRUrYO1HWz/AT4uiMnuVN4+QBnQvRjjJufNB3TfvIbW1g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0ae04629-76f3-4c12-9a17-9552f2118c6c",
+                            SecurityStamp = "561e14ea-dbe3-44fb-a89e-dada60d431ef",
                             TwoFactorEnabled = false,
                             UserName = "ilyass"
                         });
