@@ -124,6 +124,7 @@ namespace VsGalerie.Controllers
 
                     Galerie galerie = await _context.Galerie.FindAsync(galerieId);
                     galerie.Pictures.Add(picture);
+                    _context.Picture.Add(picture);
                     await _context.SaveChangesAsync();
                     return Ok(picture);
                 }
