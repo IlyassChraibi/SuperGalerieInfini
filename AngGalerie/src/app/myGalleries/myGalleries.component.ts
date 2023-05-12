@@ -42,7 +42,7 @@ export class MyGalleriesComponent implements OnInit {
       let x = await lastValueFrom(this.http.post<any>('https://localhost:7278/api/Pictures/PostCoverPicture/'+ this.galerieMy.id,formData));
       console.log(x);
       console.log('URL:', 'https://localhost:7278/api/Pictures/GetPicture/sm/' + x.id);
-
+       this.galerieService.getGAleries();
     }
     
 
@@ -83,6 +83,14 @@ export class MyGalleriesComponent implements OnInit {
 
     this.galerieService.postGalerie(this.name, this.isPublic);
    
+  }
+
+  async deletePicture(galerieId: number, pictureId: number): Promise<void> {
+
+      let x = await lastValueFrom(this.http.delete<Picture>(`https://localhost:7278/api/Pictures/DeletePicture/${galerieId}/${pictureId}`));
+      console.log("La photo a été supprimée avec succès de la galerie");
+      console.log(x);
+    
   }
 
   async partager() : Promise<void>{

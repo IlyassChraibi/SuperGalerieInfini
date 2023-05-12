@@ -171,12 +171,11 @@ namespace VsGalerie.Controllers
                     image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture.FileName);
 
                     Galerie galerie = await _context.Galerie.FindAsync(galerieId);
-                    galerie.CoverId = picture.Id; // Mettez à jour l'ID de la couverture avant l'ajout de l'image
+                   // Mettez à jour l'ID de la couverture avant l'ajout de l'image
                     picture.Galerie = galerie;
-
                     _context.Picture.Add(picture);
                     await _context.SaveChangesAsync();
-
+                    galerie.CoverId = picture.Id;
                     _context.Entry(picture).State = EntityState.Modified;
                     _context.Update(galerie);
                     await _context.SaveChangesAsync();
@@ -196,24 +195,42 @@ namespace VsGalerie.Controllers
         }
 
         // DELETE: api/Pictures/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePicture(int id)
+        [HttpDelete("{galerieId}/{pictureId}")]
+        public async Task<IActionResult> DeletePicture(int galerieId, int pictureId)
         {
-            if (_context.Picture == null)
+            try
             {
-                return NotFound();
+                // Récupérer la galerie
+                Galerie galerie = await _context.Galerie.FindAsync(galerieId);
+
+                // Vérifier si la galerie existe
+                if (galerie == null)
+                {
+                    return NotFound(new { Message = "La galerie n'existe pas" });
+                }
+
+                // Vérifier si la photo existe dans la galerie
+                Picture picture = galerie.Pictures.FirstOrDefault(p => p.Id == pictureId);
+                if (picture == null)
+                {
+                    return NotFound(new { Message = "La photo n'existe pas dans la galerie" });
+                }
+
+                // Supprimer la référence de la photo dans la galerie
+                galerie.Pictures.Remove(picture);
+
+                // Supprimer la photo de la base de données
+                _context.Picture.Remove(picture);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "La photo a été supprimée avec succès de la galerie" });
             }
-            var picture = await _context.Picture.FindAsync(id);
-            if (picture == null)
+            catch (Exception)
             {
-                return NotFound();
+                throw;
             }
-
-            _context.Picture.Remove(picture);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
+
 
         private bool PictureExists(int id)
         {

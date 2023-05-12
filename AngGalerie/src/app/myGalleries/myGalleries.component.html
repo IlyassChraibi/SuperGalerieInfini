@@ -13,7 +13,6 @@
       <!-- Photos de couverture de galeries -->
      <div *ngFor="let galerie of galerieService.galeries" (click)="onSelectGalerie(galerie)" class="galleryThumbnail">
       <div>{{galerie.name}}</div>
-      <p>Cover ID: {{galerie.coverId}}</p>
       <img *ngIf="galerie.coverId == 0" src="/assets/images/galleryThumbnail.png" alt="Galerie #1">
       <img *ngIf="galerie.coverId != 0" [src]="'https://localhost:7278/api/Pictures/GetPicture/sm/' + galerie.coverId" alt="Galerie #1">
      </div>
@@ -78,6 +77,7 @@
         <div>{{galerieMy.name}}</div>
         <div *ngFor="let picture of galerieMy.pictures; let i = index">
           <img [src]="'https://localhost:7278/api/Pictures/GetPicture/sm/' + picture.id" [alt]="'Galerie #'+ (i+1)">
+          <button (click)="deletePicture(galerieMy.id, picture.id)">Supprimer</button>
       </div>      
       </div>
     </div>
