@@ -31,6 +31,7 @@ export class MyGalleriesComponent implements OnInit {
 
   ngOnInit() {
     this.galerieService.getGAleries();
+    console.log(this.galerieMy.pictures);
   }
 
   ngAfterViewInit() { 

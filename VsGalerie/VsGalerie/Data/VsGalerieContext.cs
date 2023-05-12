@@ -51,6 +51,24 @@ namespace VsGalerie.Data
             builder.Entity<User>().HasData(u2);
             builder.Entity<User>().HasData(u1);
 
+            Picture picture1 = new Picture()
+            {
+                Id = 1,
+                FileName = "0d0c401a-046e-42ff-a5cf-d8551fd4e7c2.jfif",
+                MimeType = "image/jpeg",
+            };
+            builder.Entity<Picture>().HasData(picture1);
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm" + "/" + picture1.FileName);
+            Image image = Image.Load(bytes);
+            image.Mutate(i =>
+            i.Resize(new ResizeOptions()
+            {
+                Mode = ResizeMode.Min,
+                Size = new Size() { Width = 320 }
+            })
+            );
+            image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture1.FileName);
+
             builder.Entity<Galerie>().HasData(new Galerie()
             {
                 Id = 1,
@@ -60,6 +78,7 @@ namespace VsGalerie.Data
                 Id = 2,
                 Name = "tableau2",
                 IsPublic = false,
+                
             }, 
             new Galerie
             {
@@ -82,23 +101,7 @@ namespace VsGalerie.Data
                     r.HasData(new { UserId = u2.Id, GaleriesId = 4 });
                 });
 
-            Picture picture1 = new Picture()
-            {
-                Id = 1,
-                FileName = "0d0c401a-046e-42ff-a5cf-d8551fd4e7c2",
-                MimeType = "image/jfif",
-            };
-            builder.Entity<Picture>().HasData(picture1);
-            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm"+ "/" + picture1.FileName);
-            Image image = Image.Load(bytes);
-            image.Mutate(i =>
-            i.Resize(new ResizeOptions()
-            {
-                Mode = ResizeMode.Min,
-                Size = new Size() { Width = 320 }
-            })
-            );
-            image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture1.FileName);
+
         }
 
         public DbSet<VsGalerie.Models.Galerie> Galerie { get; set; } = default!;

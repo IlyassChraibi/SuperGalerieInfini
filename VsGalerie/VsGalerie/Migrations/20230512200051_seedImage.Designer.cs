@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VsGalerie.Data;
 
@@ -11,9 +12,10 @@ using VsGalerie.Data;
 namespace VsGalerie.Migrations
 {
     [DbContext(typeof(VsGalerieContext))]
-    partial class VsGalerieContextModelSnapshot : ModelSnapshot
+    [Migration("20230512200051_seedImage")]
+    partial class seedImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace VsGalerie.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GalerieUser", (string)null);
+                    b.ToTable("GalerieUser");
 
                     b.HasData(
                         new
@@ -212,7 +214,7 @@ namespace VsGalerie.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Galerie", (string)null);
+                    b.ToTable("Galerie");
 
                     b.HasData(
                         new
@@ -266,14 +268,14 @@ namespace VsGalerie.Migrations
 
                     b.HasIndex("GalerieId");
 
-                    b.ToTable("Picture", (string)null);
+                    b.ToTable("Picture");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             FileName = "0d0c401a-046e-42ff-a5cf-d8551fd4e7c2.jfif",
-                            MimeType = "image/jpeg"
+                            MimeType = "image/jfif"
                         });
                 });
 
@@ -346,15 +348,15 @@ namespace VsGalerie.Migrations
                         {
                             Id = "21111111-1111-1111-1111-111111111112",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1810bc4f-1ec8-4bf8-b496-947a9e2143b4",
+                            ConcurrencyStamp = "30995958-0de1-4630-bec7-bd69de920d49",
                             Email = "i.i@i.ca",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "I.I@I.CA",
                             NormalizedUserName = "ILYAS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFpl5cXy8uc3cyW3brGo/0Z8SjNXopLSCR1jbfUE092oid6U9aJxS5MvaBs0/7uRJQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDYLcxpXkTY9g9ioOm8z+S7V929eDy4iRin9KinyxryFO0PTQAYORUKRiECsp/B32A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "39154754-8e9f-4eb5-9d88-8beeee5e0c30",
+                            SecurityStamp = "796b2167-106a-47af-b0ae-388a73f915ec",
                             TwoFactorEnabled = false,
                             UserName = "ilyas"
                         },
@@ -362,15 +364,15 @@ namespace VsGalerie.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7a907b44-82ea-4e20-81a1-778787660896",
+                            ConcurrencyStamp = "62d1196f-f9bc-4a8f-9f3a-b0e7b938473d",
                             Email = "i.i@i.ca",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "I.I@I.CA",
                             NormalizedUserName = "ILYASS",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIr6/iE4tGQYQAUd2YF2MrST53nlrQS3hZkSF/4i2mHKbvqFvDqKRJBm0OHy/gjg5g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPghSTYUuW27Mr+9GWi2HSGethUxHVa0gMYM1bl/KkEH4IYNa6Kq0QKNp6Mx3PLffg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3cbf6e6b-3ed4-4f3d-9da1-ff51e787c94d",
+                            SecurityStamp = "1f5ed277-e142-46ff-b917-17484034285f",
                             TwoFactorEnabled = false,
                             UserName = "ilyass"
                         });
