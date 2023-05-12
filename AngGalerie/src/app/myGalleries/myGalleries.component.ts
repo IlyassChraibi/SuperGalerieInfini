@@ -1,9 +1,13 @@
 import { GalerieService } from './../service/galerie.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Galerie } from '../model/Galerie';
 import { lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Picture } from '../model/Picture';
+import { Router } from '@angular/router';
+
+declare var Masonry : any;
+declare var imagesLoaded : any;
 
 @Component({
   selector: 'app-myGalleries',
@@ -13,16 +17,54 @@ import { Picture } from '../model/Picture';
 export class MyGalleriesComponent implements OnInit {
 
   galerieMy !: Galerie;
+  selectedPicture: any; 
   name : string = "";
   username : string="";
   isPublic !: boolean ;
   @ViewChild('fileuploadviewchild', {static:false}) pictureInput ?: ElementRef;
   @ViewChild('fileuploadcover', {static:false}) coverInput ?: ElementRef;
 
-  constructor(public galerieService : GalerieService, public http: HttpClient) { }
+  @ViewChild('masongrid') masongrid ?: ElementRef;
+  @ViewChildren('masongriditems') masongriditems ?: QueryList<any>;
+
+  constructor(public galerieService : GalerieService, public http: HttpClient,private router: Router) { }
 
   ngOnInit() {
     this.galerieService.getGAleries();
+  }
+
+  ngAfterViewInit() { 
+        this.masongriditems?.changes.subscribe(e => { 
+          this.initMasonry(); 
+        }); 
+      
+        if(this.masongriditems!.length > 0) { 
+          this.initMasonry(); 
+        } 
+      } 
+    
+      initMasonry() { 
+        var grid = this.masongrid?.nativeElement; 
+        var msnry = new Masonry( grid, { 
+          itemSelector: '.grid-item',
+          columnWidth:320, // À modifier si le résultat est moche
+          gutter:3
+        });
+       
+        imagesLoaded( grid ).on( 'progress', function() { 
+          msnry.layout(); 
+        }); 
+      } 
+
+  closeFullSizeImage() {
+    // Utilisez le Router pour naviguer vers une autre page ou fermer la fenêtre actuelle
+    this.router.navigate(['/']); // Exemple de redirection vers la page d'accueil
+    // Ou utilisez la méthode suivante pour fermer la fenêtre actuelle (valide uniquement si la fenêtre a été ouverte dans une nouvelle fenêtre/tab)
+    // window.close();
+  }
+
+  showFullSizeImage(picture: any) {
+    this.selectedPicture = picture;
   }
 
   async uploadCover() {

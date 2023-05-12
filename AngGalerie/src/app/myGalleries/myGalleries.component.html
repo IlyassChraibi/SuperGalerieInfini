@@ -73,15 +73,20 @@
 
     <div *ngIf="galerieMy != null" class="col-1">
       <!-- Photos de couverture de galeries -->
-      <div class="galleryThumbnail">
+      <div #masongrid class="grid">
         <div>{{galerieMy.name}}</div>
-        <div *ngFor="let picture of galerieMy.pictures; let i = index">
-          <img [src]="'https://localhost:7278/api/Pictures/GetPicture/sm/' + picture.id" [alt]="'Galerie #'+ (i+1)">
+        <div #masongriditems class="grid-item" *ngFor="let picture of galerieMy.pictures; let i = index">
+          <img [src]="'https://localhost:7278/api/Pictures/GetPicture/sm/' + picture.id" [alt]="'Galerie #'+ (i+1)"
+            (click)="showFullSizeImage(picture)">
           <button (click)="deletePicture(galerieMy.id, picture.id)">Supprimer</button>
-      </div>      
+        </div>
       </div>
     </div>
     
+    <div *ngIf="selectedPicture" class="full-size-image">
+      <img [src]="'https://localhost:7278/api/Pictures/GetPicture/lg/' + selectedPicture.id" [alt]="'Full Size Image'">
+      <button class="close-button" (click)="closeFullSizeImage()">X</button>
+    </div>
     
     </div>
 
