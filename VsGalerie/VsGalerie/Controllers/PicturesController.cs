@@ -26,15 +26,19 @@ namespace VsGalerie.Controllers
         }
 
         // GET: api/Pictures
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Picture>>> GetPicture()
+        [HttpGet("{galerieId}")]
+        public async Task<ActionResult<IEnumerable<Picture>>> GetPicturesByGalerie(int galerieId)
         {
-          if (_context.Picture == null)
-          {
-              return NotFound();
-          }
-            return await _context.Picture.ToListAsync();
+            var pictures = await _context.Picture.Where(p => p.Galerie.Id == galerieId).ToListAsync();
+
+            if (pictures == null || !pictures.Any())
+            {
+                return NotFound();
+            }
+
+            return pictures;
         }
+
 
         // GET: api/Pictures/5
         [HttpGet("{size}/{id}")]

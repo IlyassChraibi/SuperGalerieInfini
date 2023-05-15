@@ -1,7 +1,7 @@
 import { GalerieService } from './../service/galerie.service';
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Galerie } from '../model/Galerie';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Picture } from '../model/Picture';
 import { Router } from '@angular/router';
@@ -31,7 +31,9 @@ export class MyGalleriesComponent implements OnInit {
 
   ngOnInit() {
     this.galerieService.getGAleries();
-    console.log(this.galerieMy.pictures);
+
+
+    
   }
 
   ngAfterViewInit() { 
@@ -62,6 +64,10 @@ export class MyGalleriesComponent implements OnInit {
     this.router.navigate(['/']); // Exemple de redirection vers la page d'accueil
     // Ou utilisez la méthode suivante pour fermer la fenêtre actuelle (valide uniquement si la fenêtre a été ouverte dans une nouvelle fenêtre/tab)
     // window.close();
+  }
+
+  getPictureUrl(picture: any): string {
+    return `https://localhost:7278/api/Pictures/GetPicture/lg/${picture.id}`;
   }
 
   showFullSizeImage(picture: any) {
@@ -147,4 +153,10 @@ export class MyGalleriesComponent implements OnInit {
     this.galerieMy = galerie;
     console.log('Galerie sélectionnée :', galerie);
   }
+
+
+
+
+
+
 }
