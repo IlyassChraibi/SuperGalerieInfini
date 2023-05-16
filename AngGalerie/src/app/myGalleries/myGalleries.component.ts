@@ -139,7 +139,8 @@ export class MyGalleriesComponent implements OnInit {
       let x = await lastValueFrom(this.http.delete<Picture>(`https://localhost:7278/api/Pictures/DeletePicture/${galerieId}/${pictureId}`));
       console.log("La photo a été supprimée avec succès de la galerie");
       console.log(x);
-    
+      this.galerieService.getGAleries();
+
   }
 
   async partager() : Promise<void>{

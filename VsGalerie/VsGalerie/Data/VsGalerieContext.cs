@@ -54,11 +54,12 @@ namespace VsGalerie.Data
             Picture picture1 = new Picture()
             {
                 Id = 1,
-                FileName = "0d0c401a-046e-42ff-a5cf-d8551fd4e7c2.jfif",
-                MimeType = "image/jpeg",
+                FileName = "0eb6391b-7900-46cc-b3bb-b9b934197000.jpg",
+                MimeType = "image/jpg",
             };
             builder.Entity<Picture>().HasData(picture1);
-            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm" + "/" + picture1.FileName);
+
+            byte[] bytes = System.IO.File.ReadAllBytes(Directory.GetCurrentDirectory() + "/images/sm/" + picture1.FileName);
             Image image = Image.Load(bytes);
             image.Mutate(i =>
             i.Resize(new ResizeOptions()
@@ -67,7 +68,7 @@ namespace VsGalerie.Data
                 Size = new Size() { Width = 320 }
             })
             );
-            image.Save(Directory.GetCurrentDirectory() + "/images/sm/" + picture1.FileName);
+            image.Save(Directory.GetCurrentDirectory() + "/images/lg/" + picture1.FileName);
 
             builder.Entity<Galerie>().HasData(new Galerie()
             {
